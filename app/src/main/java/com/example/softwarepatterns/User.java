@@ -11,7 +11,7 @@ public class User{
         this.email = null;
         this.name = null;
         this.address = null;
-        this.admin = null;
+        this.admin = false;
     }
 
     public User(String email, String name, String address,Boolean admin){
@@ -25,6 +25,7 @@ public class User{
         this.email = email;
         this.name = "";
         this.address = "";
+        this.admin = false;
     }
 
     public String getEmail() {
@@ -47,8 +48,15 @@ public class User{
         return address;
     }
 
-    public void setAdress(String address) {
+    public void setAddress(String address) {
         this.address = address;
     }
 
+    public Boolean getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(Boolean admin) {
+        this.admin = admin;
+    }
 }

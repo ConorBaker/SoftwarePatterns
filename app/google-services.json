@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "321784814923",
+    "project_id": "softwarepatterns-40436",
+    "storage_bucket": "softwarepatterns-40436.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:321784814923:android:47505321d9d60ce12ddcce",
+        "android_client_info": {
+          "package_name": "com.example.softwarepatterns"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "321784814923-iuh7lj4pf34jq078sla1d2fuo4rdf01d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdKFAoYxG-33crdFZ4v1_YYjVMEQBQOto"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "321784814923-iuh7lj4pf34jq078sla1d2fuo4rdf01d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
