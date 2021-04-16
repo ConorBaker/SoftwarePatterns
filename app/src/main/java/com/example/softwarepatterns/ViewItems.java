@@ -28,7 +28,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 public class ViewItems extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
@@ -97,11 +99,15 @@ public class ViewItems extends AppCompatActivity implements AdapterView.OnItemSe
     public void checkout(View V){
         String basket = getIntent().getStringExtra("basket");;
         String[] items = basket.split("_");
+        List<String> itemsAsList = Arrays.asList(items);
         ArrayList<String> trans = new ArrayList<>();
-        for(int x = 0; x < items.length; x++){
-            if (!items[x].equals("")) {
-                DatabaseReference fireDB = FirebaseDatabase.getInstance().getReference("Items").child(items[x]);
-                String title = items[x];
+        Iterator<String> namesIterator = itemsAsList.iterator();
+
+
+        while (namesIterator.hasNext()) {
+            String title = namesIterator.next();
+            if (!title.equals("")) {
+                DatabaseReference fireDB = FirebaseDatabase.getInstance().getReference("Items").child(title);
                 fireDB.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -116,9 +122,10 @@ public class ViewItems extends AppCompatActivity implements AdapterView.OnItemSe
 
                     }
                 });
-                trans.add(items[x]);
+                trans.add(title);
             }
         }
+
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
         DatabaseReference fireDB = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid());
