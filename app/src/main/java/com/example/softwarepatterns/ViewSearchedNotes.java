@@ -38,6 +38,7 @@ public class ViewSearchedNotes extends AppCompatActivity implements AdapterView.
     private FirebaseAuth mAuth;
     public DatabaseReference db;
     public ArrayList<String> myDataSet = new ArrayList<String>();
+    private static EncryptionStrategy es;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,15 +76,18 @@ public class ViewSearchedNotes extends AppCompatActivity implements AdapterView.
                         myDataSet.add(itemObj.title);
                     } else {
                         if (cat.equals("Title")) {
-                            if (checkPartial(itemObj.title, word)) {
+                            es = CheckPartial.getInstance();
+                            if (es.check(itemObj.title, word)) {
                                 myDataSet.add(itemObj.title);
                             }
                         } else if (cat.equals("Category")) {
-                            if (itemObj.getCategory().equalsIgnoreCase(word)) {
+                            es = CheckFull.getInstance();
+                            if (es.check(itemObj.getCategory(),word)) {
                                 myDataSet.add(itemObj.title);
                             }
                         } else if (cat.equals("Manufacturer")) {
-                            if (checkPartial(itemObj.title, word)) {
+                            es = CheckPartial.getInstance();
+                            if (es.check(itemObj.manufacturer, word)) {
                                 myDataSet.add(itemObj.title);
                             }
                         }
@@ -116,20 +120,6 @@ public class ViewSearchedNotes extends AppCompatActivity implements AdapterView.
         });
     }
 
-    public boolean checkPartial(String w1, String w2) {
-        String[] s1 = w1.split(" ");
-        String[] s2 = w2.split(" ");
-        boolean found = false;
-
-        for (int x = 0; x < s1.length; x++) {
-            for (int i = 0; i < s2.length; i++) {
-                if (s1[x].equals(s2[i])) {
-                    found = true;
-                }
-            }
-        }
-        return found;
-    }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
