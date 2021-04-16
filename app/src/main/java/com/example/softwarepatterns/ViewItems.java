@@ -33,7 +33,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-public class ViewItems extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+public class ViewItems extends AppCompatActivity implements AdapterView.OnItemSelectedListener,OrderServiceFacade{
 
     int stock =0;
     private FirebaseAuth mAuth;
@@ -112,7 +112,7 @@ public class ViewItems extends AppCompatActivity implements AdapterView.OnItemSe
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         Item item = snapshot.getValue(Item.class);
-                        if(item.getTitle().equals(title)&& item.getStock()!= 0){
+                        if(placeOrder(item)){
                             stock = item.getStock() -1;
                             fireDB.child("stock").setValue(stock);
                         }
@@ -123,6 +123,7 @@ public class ViewItems extends AppCompatActivity implements AdapterView.OnItemSe
                     }
                 });
                 trans.add(title);
+
             }
         }
 
@@ -153,10 +154,8 @@ public class ViewItems extends AppCompatActivity implements AdapterView.OnItemSe
 
             }
         });
-
-        Intent intent = new Intent(getApplicationContext(), ViewItems.class);
-        intent.putExtra("basket", "_");
-        startActivity(intent);  
+        Intent intent = new Intent(getApplicationContext(), PaymentService.class);
+        startActivity(intent);
     }
 
     public void viewTrans(View V){
@@ -164,4 +163,17 @@ public class ViewItems extends AppCompatActivity implements AdapterView.OnItemSe
         startActivity(intent);
     }
 
+    @Override
+    public boolean placeOrder(Item item) {
+        boolean orderFulfilled = false;
+        if (CheckInventory.isAvailable(item)) {
+            boolean paymentConfirmed = RecievePayment.makePayment(true);
+            if (paymentConfirmed) {
+                orderFulfilled = true;
+            }
+        } else {
+            orderFulfilled = false;
+        }
+        return orderFulfilled;
+    }
 }
