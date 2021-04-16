@@ -17,4 +17,23 @@
     <string name="email">Email</string>
     <string name="title_activity_display_info">DisplayInfo</string>
     <string name="title_activity_map">Map</string>
+
+
+    <string-array name="SpinnerArray">
+        <item>Title</item>
+        <item>Category</item>
+        <item>Manufacturer</item>
+    </string-array>
+
+    <string-array name="SpinnerArray2">
+        <item>Title</item>
+        <item>Price</item>
+        <item>Manufacturer</item>
+    </string-array>
+
+    <string-array name="SpinnerArray3">
+        <item>Ascending </item>
+        <item>Descending </item>
+    </string-array>
+
 </resources>

@@ -1,5 +1,6 @@
 package com.example.softwarepatterns;
 
+import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,38 +36,39 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
     }
 
-    public void signInCheck(View v){
+    public void signInCheck(View v) {
 
-        EditText usernameText = (EditText) findViewById( R.id.uEditText );
-        EditText passwordText = (EditText) findViewById( R.id.pEditText );
+        EditText usernameText = (EditText) findViewById(R.id.uEditText);
+        EditText passwordText = (EditText) findViewById(R.id.pEditText);
 
         email = usernameText.getText().toString();
         password = passwordText.getText().toString();
 
         mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this , new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText(MainActivity.this, "User signed in",
                                     Toast.LENGTH_SHORT).show();
-                            /*
-                            Intent intent= new Intent();
+                            Intent intent = new Intent(getApplicationContext(), ViewItems.class);
+                            intent.putExtra("basket", "_");
                             startActivity(intent);
-
-                             */
                         } else {
                             Log.w("MySignin", "SignInUserWithEmail:failure", task.getException());
-                            Toast.makeText(MainActivity.this, "Authentication failed.",Toast.LENGTH_SHORT).show();
-                        }}});
+                            Toast.makeText(MainActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
 
 
     }
 
-    public void signUpCheck(View v){
+    public void signUpCheck(View v) {
 
-        EditText usernameText = (EditText) findViewById( R.id.uEditText );
-        EditText passwordText = (EditText) findViewById( R.id.pEditText );
+        EditText usernameText = (EditText) findViewById(R.id.uEditText);
+        EditText passwordText = (EditText) findViewById(R.id.pEditText);
 
         email = usernameText.getText().toString();
         password = passwordText.getText().toString();
@@ -74,13 +76,13 @@ public class MainActivity extends AppCompatActivity {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task){
+                    public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Log.d("myAcctivity", "createUserWithEmail:success");
                             FirebaseUser u = mAuth.getCurrentUser();
                             String UserID = u.getUid();
                             db = FirebaseDatabase.getInstance().getReference();
-                            User user = new User(email);
+                            User user = new User.Builder(email).atName("").atAddress("").atAdmin(false).build();
                             db.child("Users").child(UserID).setValue(user).addOnSuccessListener(
                                     new OnSuccessListener<Void>() {
                                         @Override
@@ -92,18 +94,20 @@ public class MainActivity extends AppCompatActivity {
                                     .addOnFailureListener(new OnFailureListener() {
                                         @Override
                                         public void onFailure(@NonNull Exception e) {
-                                            Toast.makeText(MainActivity.this, "Write is failed", Toast.LENGTH_LONG).show();}
+                                            Toast.makeText(MainActivity.this, "Write is failed", Toast.LENGTH_LONG).show();
+                                        }
                                     });
-                            /*
-                            Intent intent= new Intent();
+                            Intent intent = new Intent(getApplicationContext(), ViewItems.class);
+                            intent.putExtra("basket", "_");
                             startActivity(intent);
 
-                             */
                         } else {
                             Log.w("myAcctivity", "createUserWithEmail:failure", task.getException());
                             Toast.makeText(MainActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-                        }}});
+                        }
+                    }
+                });
     }
 
 
