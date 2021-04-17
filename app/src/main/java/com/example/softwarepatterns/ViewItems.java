@@ -159,8 +159,29 @@ public class ViewItems extends AppCompatActivity implements AdapterView.OnItemSe
     }
 
     public void viewTrans(View V){
-        Intent intent = new Intent(getApplicationContext(), viewTransactions.class);
-        startActivity(intent);
+        mAuth = FirebaseAuth.getInstance();
+        String title = getIntent().getStringExtra("title");
+        final FirebaseUser user = mAuth.getCurrentUser();
+        String UserID = user.getUid();
+        db = FirebaseDatabase.getInstance().getReference("Users").child(UserID);
+        db.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User user = snapshot.getValue(User.class);
+                if(user.getAdmin()){
+                    Intent intent = new Intent(getApplicationContext(), viewTransactions.class);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(ViewItems.this, "You don't have permission to do that", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 
     @Override
